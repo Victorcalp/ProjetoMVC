@@ -1,17 +1,19 @@
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.EntityFrameworkCore;
 using ProjetoMVC.Data;
+using ProjetoMVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+//faz conexão com banco MySQL
 builder.Services.AddDbContext<Contexto>(options => options.UseMySql("server = localhost; initial catalog = ProjetoMVC; uid = developer; pwd = Victorc@lp0609 ", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.31 - mysql")));
-
 
 //Registra a classe no sistema de indepedencia da aplicação, permite que o serviço pode ser injetado em outros e tbm possa ser intejado
 builder.Services.AddScoped<SeedingService>();
+builder.Services.AddScoped<SellerService>();
 
 var app = builder.Build();
 
