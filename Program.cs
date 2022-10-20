@@ -9,7 +9,14 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<Contexto>(options => options.UseMySql("server = localhost; initial catalog = ProjetoMVC; uid = developer; pwd = Victorc@lp0609 ", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.31 - mysql")));
 
+
+//Registra a classe no sistema de indepedencia da aplicação, permite que o serviço pode ser injetado em outros e tbm possa ser intejado
+builder.Services.AddScoped<SeedingService>();
+
 var app = builder.Build();
+
+//Vai rodar o SeedingService para popular a base dados caso esteja vazia
+app.Services.CreateScope().ServiceProvider.GetRequiredService<SeedingService>().Seed();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
