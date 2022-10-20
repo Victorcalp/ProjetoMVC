@@ -1,7 +1,13 @@
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.EntityFrameworkCore;
+using ProjetoMVC.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<Contexto>(options => options.UseMySql("server = localhost; initial catalog = CRUD_MVC; uid = developer; pwd = Victorc@lp0609 ", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.31 - mysql")));
 
 var app = builder.Build();
 
