@@ -4,3 +4,34 @@
 }
 
 <h3>@ViewData["Title"]</h3>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div>
+                <div>
+                    <label class="form-label" asp-for="Name"></label>
+                    <input class="input-group" asp-for="Name" />
+                </div>
+                <div>
+                    <label class="form-label" asp-for="Email">Email</label>
+                    <input class="input-group" asp-for="Email" />
+                </div>
+                <div>
+                    <label class="form-label" asp-for="BirthDate">BirthDate</label>
+                    <input class="input-group" asp-for="BirthDate" />
+                </div>
+                <div>
+                    <label class="form-label" asp-for="BaseSalary">BaseSalary</label>
+                    <input class="input-group" asp-for="BaseSalary" />
+                </div>
+                <div class="btn btn-group">
+                    <a asp-action="Index" class="btn btn-dark">Cancelar</a>
+                </div>
+                <div>
+                    <input type="submit" value="Edit" class="btn btn-dark" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

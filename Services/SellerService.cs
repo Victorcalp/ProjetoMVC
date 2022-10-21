@@ -1,5 +1,6 @@
 ﻿using ProjetoMVC.Data;
 using ProjetoMVC.Models;
+using ProjetoMVC.Models.ModelViews;
 
 namespace ProjetoMVC.Services
 {
@@ -21,6 +22,12 @@ namespace ProjetoMVC.Services
         public void Insert(Seller seller)
         {
             _contexto.Add(seller);
+            _contexto.SaveChanges();
+        }
+
+        public void Edit(Seller seller)
+        {
+            _contexto.Update(seller);
             _contexto.SaveChanges();
         }
     }

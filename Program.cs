@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.EntityFrameworkCore;
 using ProjetoMVC.Data;
+using ProjetoMVC.Models.ModelViews;
 using ProjetoMVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<Contexto>(options => options.UseMySql("server = lo
 //Registra a classe no sistema de indepedencia da aplicação, permite que o serviço pode ser injetado em outros e tbm possa ser intejado
 builder.Services.AddScoped<SeedingService>();
 builder.Services.AddScoped<SellerService>();
+builder.Services.AddScoped<DepartmentService>();
 
 var app = builder.Build();
 

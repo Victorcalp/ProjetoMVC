@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjetoMVC.Models;
+using ProjetoMVC.Models.ModelViews;
 using ProjetoMVC.Services;
 
 namespace ProjetoMVC.Controllers
@@ -7,10 +8,12 @@ namespace ProjetoMVC.Controllers
     public class SellersController : Controller
     {
         private readonly SellerService _sellerService;
+        private readonly DepartmentService _departmentService;
 
-        public SellersController(SellerService sellerService)
+        public SellersController(SellerService sellerService, DepartmentService departmentService)
         {
             _sellerService = sellerService;
+            _departmentService = departmentService;
         }
         public IActionResult Index()
         {
@@ -22,7 +25,10 @@ namespace ProjetoMVC.Controllers
         //chama a pagina Create
         public IActionResult Create()
         {
-            return View();
+            //vai buscar no banco de dados todos os departamento
+            var departments = _departmentService.FiendAll();
+            var viewModel = new SellerFormViewModel { Departments = departments };
+            return View(viewModel);
         }
 
         //Pega os dados da pagina Create
@@ -37,6 +43,14 @@ namespace ProjetoMVC.Controllers
         public IActionResult Edit()
         {
             return View();
-        }   
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Seller seller)
+        {
+            _sellerService.Edit(seller);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
