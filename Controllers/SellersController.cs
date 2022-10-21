@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjetoMVC.Models;
 using ProjetoMVC.Services;
 
 namespace ProjetoMVC.Controllers
@@ -17,5 +18,25 @@ namespace ProjetoMVC.Controllers
             var list = _sellerService.FindAll();
             return View(list);
         }
+
+        //chama a pagina Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        //Pega os dados da pagina Create
+        [HttpPost]
+        [ValidateAntiForgeryToken] //previne ataque CSRF
+        public IActionResult Create(Seller seller)
+        {
+            _sellerService.Insert(seller);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Edit()
+        {
+            return View();
+        }   
     }
 }

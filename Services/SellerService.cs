@@ -17,5 +17,11 @@ namespace ProjetoMVC.Services
             //vai retornar uma lista de usuarios do BD
             return _contexto.Sellers.ToList();
         }
+
+        public void Insert(Seller seller)
+        {
+            _contexto.Add(seller);
+            _contexto.SaveChanges();
+        }
     }
 }
