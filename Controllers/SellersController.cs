@@ -52,5 +52,30 @@ namespace ProjetoMVC.Controllers
             _sellerService.Edit(seller);
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var del = _sellerService.FindById(id.Value);
+
+            if (del == null)
+            {
+                return NotFound();
+            }
+
+            return View(del);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+            _sellerService.Remove(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

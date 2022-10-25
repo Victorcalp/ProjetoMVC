@@ -30,5 +30,17 @@ namespace ProjetoMVC.Services
             _contexto.Update(seller);
             _contexto.SaveChanges();
         }
+
+        public Seller FindById(int id)
+        {
+            return _contexto.Sellers.FirstOrDefault(obj => obj.Id == id);
+        }
+
+        public void Remove(int id)
+        {
+            var obj = _contexto.Sellers.Find(id);
+            _contexto.Sellers.Remove(obj);
+            _contexto.SaveChanges();
+        }
     }
 }
