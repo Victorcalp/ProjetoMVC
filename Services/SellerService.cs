@@ -1,4 +1,5 @@
-﻿using ProjetoMVC.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjetoMVC.Data;
 using ProjetoMVC.Models;
 using ProjetoMVC.Models.ModelViews;
 
@@ -33,7 +34,7 @@ namespace ProjetoMVC.Services
 
         public Seller FindById(int id)
         {
-            return _contexto.Sellers.FirstOrDefault(obj => obj.Id == id);
+            return _contexto.Sellers.Include(x => x.Department).FirstOrDefault(obj => obj.Id == id);
         }
 
         public void Remove(int id)
