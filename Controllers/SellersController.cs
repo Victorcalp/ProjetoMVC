@@ -22,7 +22,6 @@ namespace ProjetoMVC.Controllers
             return View(list);
         }
 
-        //chama a pagina Create
         public IActionResult Create()
         {
             //vai buscar no banco de dados todos os departamento
@@ -31,7 +30,6 @@ namespace ProjetoMVC.Controllers
             return View(viewModel);
         }
 
-        //Pega os dados da pagina Create
         [HttpPost]
         [ValidateAntiForgeryToken] //previne ataque CSRF
         public IActionResult Create(Seller seller)
