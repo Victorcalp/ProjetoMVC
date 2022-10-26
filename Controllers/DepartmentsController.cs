@@ -22,7 +22,7 @@ namespace ProjetoMVC.Controllers
         // GET: Departments
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Departments.ToListAsync());
+            return View(await _context.Departments.ToListAsync());
         }
 
         // GET: Departments/Details/5
@@ -148,14 +148,14 @@ namespace ProjetoMVC.Controllers
             {
                 _context.Departments.Remove(department);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DepartmentExists(int id)
         {
-          return _context.Departments.Any(e => e.Id == id);
+            return _context.Departments.Any(e => e.Id == id);
         }
     }
 }

@@ -33,8 +33,14 @@
                 <select asp-for="Seller.DepartmentId" asp-items="@(new SelectList(Model.Departments, "Id", "Name"))" class="form-control"></select>
             </div>
             <div>
-                <input type="submit" value="Save" class="btn btn-dark" />
+                <input type="submit" value="Edit" class="btn btn-dark" />
             </div>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

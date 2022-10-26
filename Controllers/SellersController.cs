@@ -19,43 +19,37 @@ namespace ProjetoMVC.Controllers
             _sellerService = sellerService;
             _departmentService = departmentService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //chama o model, pega a lista e encaminha para a view
-            var list = _sellerService.FindAll();
+            var list = await _sellerService.FindAllAsync();
             return View(list);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             //vai buscar no banco de dados todos os departamento
-            var departments = _departmentService.FiendAll();
+            var departments = await _departmentService.FiendAllAsync();
             var viewModel = new SellerFormViewModel { Departments = departments };
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken] //previne ataque CSRF
-        public IActionResult Create(Seller seller)
+        public async Task<IActionResult> Create(Seller seller)
         {
-            if (!ModelState.IsValid)
-            {
-                var obj = _departmentService.FiendAll();
-                var viewModel = new SellerFormViewModel { Seller = seller, Departments = obj };
-                return View(viewModel);
-            }
-            _sellerService.Insert(seller);
+            await _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "ID not provided" });
             }
 
-            var obj = _sellerService.FindById(id.Value);
+            var obj = await _sellerService.FindByIdAsync(id.Value);
 
             if (obj == null)
             {
@@ -63,7 +57,7 @@ namespace ProjetoMVC.Controllers
             }
 
             //para povoar a pagina
-            List<Department> departments = _departmentService.FiendAll();
+            List<Department> departments = await _departmentService.FiendAllAsync();
             SellerFormViewModel viewModel = new SellerFormViewModel { Seller = obj, Departments = departments };
 
             return View(viewModel);
@@ -71,21 +65,15 @@ namespace ProjetoMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Seller seller)
+        public async Task<IActionResult> Edit(int id, Seller seller)
         {
-            if (!ModelState.IsValid)
-            {
-                var departments = _departmentService.FiendAll();
-                var viewModel = new SellerFormViewModel { Departments = departments, Seller = seller };
-                return View(viewModel);
-            }
             if (id != seller.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "ID not found" });
             }
             try
             {
-                _sellerService.Update(seller);
+                await _sellerService.UpdateAsync(seller);
                 return RedirectToAction(nameof(Index));
             }
             catch (ApplicationException obj)
@@ -94,14 +82,14 @@ namespace ProjetoMVC.Controllers
             }
         }
 
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "ID not Found" });
             }
 
-            var del = _sellerService.FindById(id.Value);
+            var del = await _sellerService.FindByIdAsync(id.Value);
 
             if (del == null)
             {
@@ -113,20 +101,20 @@ namespace ProjetoMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _sellerService.Remove(id);
+            await _sellerService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return RedirectToAction(nameof(Error), new { message = "ID not Found" });
             }
 
-            var list = _sellerService.FindById(id.Value);
+            var list = await _sellerService.FindByIdAsync(id.Value);
 
             if (list == null)
             {

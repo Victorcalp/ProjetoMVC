@@ -15,39 +15,38 @@ namespace ProjetoMVC.Services
             _contexto = contexto;
         }
 
-        public List<Seller> FindAll()
+        public async Task<List<Seller>> FindAllAsync()
         {
             //vai retornar uma lista de usuarios do BD
-            return _contexto.Sellers.ToList();
+            return await _contexto.Sellers.ToListAsync();
         }
-
-        public void Insert(Seller seller)
+        public async Task Insert(Seller seller)
         {
             _contexto.Add(seller);
-            _contexto.SaveChanges();
+            await _contexto.SaveChangesAsync();
         }
-        public Seller FindById(int id)
+        public async Task<Seller> FindByIdAsync(int id)
         {
-            return _contexto.Sellers.Include(x => x.Department).FirstOrDefault(obj => obj.Id == id);
+            return await _contexto.Sellers.Include(x => x.Department).FirstOrDefaultAsync(obj => obj.Id == id);
         }
 
-        public void Remove(int id)
+        public async Task RemoveAsync(int id)
         {
-            var obj = _contexto.Sellers.Find(id);
+            var obj = await _contexto.Sellers.FindAsync(id);
             _contexto.Sellers.Remove(obj);
-            _contexto.SaveChanges();
+            await _contexto.SaveChangesAsync();
         }
 
-        public void Update(Seller seller)
+        public async Task UpdateAsync(Seller seller)
         {
-            if (!_contexto.Sellers.Any(x => x.Id == seller.Id))
+            if (!await _contexto.Sellers.AnyAsync(x => x.Id == seller.Id))
             {
                 throw new NotFoundException("ID não encontrado");
             }
             try
             {
                 _contexto.Update(seller);
-                _contexto.SaveChanges();
+                await _contexto.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException message)
             {

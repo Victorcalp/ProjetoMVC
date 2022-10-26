@@ -1,4 +1,5 @@
-﻿using ProjetoMVC.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjetoMVC.Data;
 using ProjetoMVC.Models;
 using System.Linq;
 
@@ -13,9 +14,9 @@ namespace ProjetoMVC.Services
             _contexto = contexto;
         }
 
-        public List<Department> FiendAll()
+        public async Task<List<Department>> FiendAllAsync()
         {
-            return _contexto.Departments.OrderBy(x =>x.Name).ToList();
+            return await _contexto.Departments.OrderBy(x => x.Name).ToListAsync();
         }
     }
 }
