@@ -1,37 +1,39 @@
-﻿@model ProjetoMVC.Models.Seller;
+﻿@model ProjetoMVC.Models.ModelViews.SellerFormViewModel
+
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h3>@ViewData["Title"]</h3>
+<h2>@ViewData["Title"]</h2>
+
+<hr />
 
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
-            <input type="hidden" asp-route-id="@Model.Id" />
+            <input type="hidden" asp-for="Seller.Id" />
             <div>
-                <div>
-                    <label class="form-label" asp-for="Name"></label>
-                    <input class="input-group" asp-for="Name" />
-                </div>
-                <div>
-                    <label class="form-label" asp-for="Email">Email</label>
-                    <input class="input-group" asp-for="Email" />
-                </div>
-                <div>
-                    <label class="form-label" asp-for="BirthDate">BirthDate</label>
-                    <input class="input-group" asp-for="BirthDate" />
-                </div>
-                <div>
-                    <label class="form-label" asp-for="BaseSalary">BaseSalary</label>
-                    <input class="input-group" asp-for="BaseSalary" />
-                </div>
-                <div class="btn btn-group">
-                    <a asp-action="Index" class="btn btn-dark">Cancelar</a>
-                </div>
-                <div>
-                    <input type="submit" value="Edit" class="btn btn-dark" />
-                </div>
+                <label asp-for="Seller.Name" class="form-label"></label>
+                <input asp-for="Seller.Name" class="form-control" />
+            </div>
+            <div>
+                <label asp-for="Seller.Email" class="form-label"></label>
+                <input asp-for="Seller.Email" class="form-control" />
+            </div>
+            <div>
+                <label asp-for="Seller.BirthDate" class="form-label"></label>
+                <input asp-for="Seller.BirthDate" class="form-control" />
+            </div>
+            <div>
+                <label asp-for="Seller.BaseSalary" class="form-label"></label>
+                <input asp-for="Seller.BaseSalary" class="form-control" />
+            </div>
+            <div>
+                <label asp-for="Seller.DepartmentId" class="form-label"></label>
+                <select asp-for="Seller.DepartmentId" asp-items="@(new SelectList(Model.Departments, "Id", "Name"))" class="form-control"></select>
+            </div>
+            <div>
+                <input type="submit" value="Save" class="btn btn-dark" />
             </div>
         </form>
     </div>

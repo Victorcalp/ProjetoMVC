@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProjetoMVC.Models;
 using ProjetoMVC.Models.ModelViews;
 using ProjetoMVC.Services;
+using ProjetoMVC.Services.Exception;
 
 namespace ProjetoMVC.Controllers
 {
@@ -38,17 +40,48 @@ namespace ProjetoMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Edit()
+        public IActionResult Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _sellerService.FindById(id.Value);
+
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            //para povoar a pagina
+            List<Department> departments = _departmentService.FiendAll();
+            SellerFormViewModel viewModel = new SellerFormViewModel { Seller = obj, Departments = departments };
+
+            return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Seller seller)
+        public IActionResult Edit(int id, Seller seller)
         {
-            _sellerService.Edit(seller);
-            return RedirectToAction(nameof(Index));
+            if (id != seller.Id)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                _sellerService.Update(seller);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (NotFoundException message)
+            {
+                return NotFound();
+            }
+            catch (DbUpdateConcurrencyException message)
+            {
+                return BadRequest();
+            }
         }
 
         public IActionResult Delete(int? id)
@@ -78,14 +111,14 @@ namespace ProjetoMVC.Controllers
 
         public IActionResult Details(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var list = _sellerService.FindById(id.Value);
 
-            if(list == null)
+            if (list == null)
             {
                 return NotFound();
             }

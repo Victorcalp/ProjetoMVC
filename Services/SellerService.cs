@@ -2,6 +2,7 @@
 using ProjetoMVC.Data;
 using ProjetoMVC.Models;
 using ProjetoMVC.Models.ModelViews;
+using ProjetoMVC.Services.Exception;
 
 namespace ProjetoMVC.Services
 {
@@ -25,13 +26,6 @@ namespace ProjetoMVC.Services
             _contexto.Add(seller);
             _contexto.SaveChanges();
         }
-
-        public void Edit(Seller seller)
-        {
-            _contexto.Update(seller);
-            _contexto.SaveChanges();
-        }
-
         public Seller FindById(int id)
         {
             return _contexto.Sellers.Include(x => x.Department).FirstOrDefault(obj => obj.Id == id);
@@ -42,6 +36,23 @@ namespace ProjetoMVC.Services
             var obj = _contexto.Sellers.Find(id);
             _contexto.Sellers.Remove(obj);
             _contexto.SaveChanges();
+        }
+
+        public void Update(Seller seller)
+        {
+            if (!_contexto.Sellers.Any(x => x.Id == seller.Id))
+            {
+                throw new NotFoundException("ID não encontrado");
+            }
+            try
+            {
+                _contexto.Update(seller);
+                _contexto.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException message)
+            {
+                throw new DbConcurrencyException(message.Message);
+            }
         }
     }
 }
