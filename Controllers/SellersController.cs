@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ProjetoMVC.Models;
 using ProjetoMVC.Models.ModelViews;
 using ProjetoMVC.Services;
@@ -37,6 +38,12 @@ namespace ProjetoMVC.Controllers
         [ValidateAntiForgeryToken] //previne ataque CSRF
         public IActionResult Create(Seller seller)
         {
+            if (!ModelState.IsValid)
+            {
+                var obj = _departmentService.FiendAll();
+                var viewModel = new SellerFormViewModel { Seller = seller, Departments = obj };
+                return View(viewModel);
+            }
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index));
         }
@@ -66,6 +73,12 @@ namespace ProjetoMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Seller seller)
         {
+            if (!ModelState.IsValid)
+            {
+                var departments = _departmentService.FiendAll();
+                var viewModel = new SellerFormViewModel { Departments = departments, Seller = seller };
+                return View(viewModel);
+            }
             if (id != seller.Id)
             {
                 return BadRequest();
