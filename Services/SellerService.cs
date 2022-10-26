@@ -32,9 +32,16 @@ namespace ProjetoMVC.Services
 
         public async Task RemoveAsync(int id)
         {
-            var obj = await _contexto.Sellers.FindAsync(id);
-            _contexto.Sellers.Remove(obj);
-            await _contexto.SaveChangesAsync();
+            try
+            {
+                var obj = await _contexto.Sellers.FindAsync(id);
+                _contexto.Sellers.Remove(obj);
+                await _contexto.SaveChangesAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                throw new IntegrityException(e.Message);
+            }
         }
 
         public async Task UpdateAsync(Seller seller)

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjetoMVC.Data;
 using ProjetoMVC.Models;
+using ProjetoMVC.Services.Exception;
 
 namespace ProjetoMVC.Controllers
 {
@@ -148,9 +151,25 @@ namespace ProjetoMVC.Controllers
             {
                 _context.Departments.Remove(department);
             }
+            try
+            {
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = "Não pode excluir" });
+            }
+        }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+        public IActionResult Error(string message)
+        {
+            var viewError = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewError);
         }
 
         private bool DepartmentExists(int id)

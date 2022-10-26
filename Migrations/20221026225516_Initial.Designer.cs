@@ -11,8 +11,8 @@ using ProjetoMVC.Data;
 namespace ProjetoMVC.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20221020191806_OtherEntities")]
-    partial class OtherEntities
+    [Migration("20221026225516_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -82,7 +82,8 @@ namespace ProjetoMVC.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(60)");
 
                     b.HasKey("Id");
 
