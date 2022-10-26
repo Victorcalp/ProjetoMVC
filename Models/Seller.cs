@@ -1,11 +1,22 @@
-﻿namespace ProjetoMVC.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ProjetoMVC.Models
 {
     public class Seller
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [Display(Name = "Birth Date")]
         public DateTime BirthDate { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:F2}")]
+        [Display(Name = "Base Salary")]
         public double BaseSalary { get; set; }
         public Department Department { get; set; }
         public int DepartmentId { get; set; } //criado por causa da View, para puxar o Id do BD

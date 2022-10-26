@@ -4,6 +4,7 @@ using ProjetoMVC.Models;
 using ProjetoMVC.Models.ModelViews;
 using ProjetoMVC.Services;
 using ProjetoMVC.Services.Exception;
+using System.Diagnostics;
 
 namespace ProjetoMVC.Controllers
 {
@@ -44,14 +45,14 @@ namespace ProjetoMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "ID not provided" });
             }
 
             var obj = _sellerService.FindById(id.Value);
 
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "ID not Found" });
             }
 
             //para povoar a pagina
@@ -74,13 +75,9 @@ namespace ProjetoMVC.Controllers
                 _sellerService.Update(seller);
                 return RedirectToAction(nameof(Index));
             }
-            catch (NotFoundException message)
+            catch (ApplicationException obj)
             {
-                return NotFound();
-            }
-            catch (DbUpdateConcurrencyException message)
-            {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = obj.Message });
             }
         }
 
@@ -88,14 +85,14 @@ namespace ProjetoMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "ID not Found" });
             }
 
             var del = _sellerService.FindById(id.Value);
 
             if (del == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "ID not Found" });
             }
 
             return View(del);
@@ -113,17 +110,26 @@ namespace ProjetoMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "ID not Found" });
             }
 
             var list = _sellerService.FindById(id.Value);
 
             if (list == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "ID not Found" });
             }
 
             return View(list);
+        }
+        public IActionResult Error(string message)
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
         }
     }
 }
