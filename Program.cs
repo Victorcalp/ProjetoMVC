@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using ProjetoMVC.Data;
-using ProjetoMVC.Models.ModelViews;
 using ProjetoMVC.Services;
 using System.Globalization;
 
@@ -18,6 +16,7 @@ builder.Services.AddDbContext<Contexto>(options => options.UseMySql("server = lo
 builder.Services.AddScoped<SeedingService>();
 builder.Services.AddScoped<SellerService>();
 builder.Services.AddScoped<DepartmentService>();
+builder.Services.AddScoped<SalesService>();
 
 var app = builder.Build();
 

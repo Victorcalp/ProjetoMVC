@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjetoMVC.Data;
 using ProjetoMVC.Models;
-using ProjetoMVC.Models.ModelViews;
 using ProjetoMVC.Services.Exception;
 
 namespace ProjetoMVC.Services

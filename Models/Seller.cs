@@ -6,7 +6,7 @@ namespace ProjetoMVC.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage ="{0} required")] //campo obrigatorio
+        [Required(ErrorMessage = "{0} required")] //campo obrigatorio
         [StringLength(60, MinimumLength = 3, ErrorMessage = "Tamanho do {0} deve ser entre {2} e {1}")]
         public string Name { get; set; }
 

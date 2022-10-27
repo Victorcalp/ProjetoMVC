@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ProjetoMVC.Models;
 using ProjetoMVC.Models.Enums;
-using ProjetoMVC.Models;
 
 namespace ProjetoMVC.Data
 {
